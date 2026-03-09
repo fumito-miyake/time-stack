@@ -1,0 +1,11 @@
+{
+  "name": "先読みタイマー",
+  "short_name": "先読みタイマー",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#000000",
+  "orientation":"landscape"
+  "icons": []
+}
