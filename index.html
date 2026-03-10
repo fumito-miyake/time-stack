@@ -165,137 +165,6 @@
         .unit-goal .info-group { align-items: flex-end; }
 
         .digital-time { font-size: 26px; font-weight: 800; color: #1e293b; line-height: 1; }
-        .label-text { font-size: 15px; fo            background-color: var(--color-bg);
-            color: var(--color-text);
-            overflow: hidden;
-            height: 100vh;
-            width: 100vw;
-        }
-
-        .app-container {
-            display: flex;
-            height: 100vh;
-            width: 100vw;
-        }
-
-        /* 左画面: 視覚化エリア */
-        .visual-area {
-            flex: 1; 
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 10px;
-            position: relative;
-            background: radial-gradient(circle at 50% 50%, #ffffff 0%, #f1f5f9 100%);
-            border-right: 1px solid var(--color-border);
-            overflow: hidden;
-        }
-
-        /* プログレスバーエリア */
-        .progress-section {
-            width: 98%; 
-            max-width: 1400px; 
-            position: relative;
-            height: 580px;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-
-        .progress-track {
-            height: 60px;
-            background-color: #E2E8F0;
-            border-radius: 16px;
-            margin: 0 40px; 
-            position: relative;
-            box-shadow: inset 0 4px 6px rgba(0,0,0,0.05);
-            z-index: 5;
-        }
-
-        .progress-fill {
-            height: 100%;
-            border-radius: 16px;
-            width: 0%;
-            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
-            position: relative;
-            min-width: 0;
-        }
-
-        /* 時計ユニット共通 */
-        .clock-unit {
-            position: absolute;
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            z-index: 10;
-        }
-
-        .unit-now { top: 10px; left: 0px; flex-direction: row; }
-        .unit-goal { top: 10px; right: 0px; flex-direction: row-reverse; }
-
-        /* おわり: 中央固定 */
-        .unit-pred { 
-            bottom: 10px; 
-            left: 50%; 
-            transform: translateX(-50%); 
-            flex-direction: row; 
-            width: fit-content;
-        }
-
-        .clock-face {
-            width: 120px;
-            height: 120px;
-            background: white;
-            border-radius: 50%;
-            border: 6px solid #334155;
-            position: relative;
-            box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1);
-            cursor: pointer;
-            flex-shrink: 0;
-            transition: background-color 0.3s;
-        }
-
-        .clock-number {
-            position: absolute;
-            width: 100%;
-            height: 100%;
-            text-align: center;
-            font-size: 15px;
-            font-weight: 700;
-            color: #475569;
-            padding: 1px; 
-        }
-
-        .clock-hand {
-            position: absolute;
-            bottom: 50%;
-            left: 50%;
-            transform-origin: bottom;
-            background: #1e293b;
-            border-radius: 10px;
-        }
-        .hand-hour { width: 6px; height: 35px; z-index: 2; }
-        .hand-min { width: 4px; height: 50px; z-index: 1; }
-        .clock-center {
-            position: absolute;
-            top: 50%; left: 50%;
-            width: 10px; height: 10px;
-            background: #1e293b;
-            border-radius: 50%;
-            transform: translate(-50%, -50%);
-            z-index: 3;
-        }
-
-        .info-group {
-            display: flex;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 4px;
-        }
-        .unit-goal .info-group { align-items: flex-end; }
-
-        .digital-time { font-size: 26px; font-weight: 800; color: #1e293b; line-height: 1; }
         .label-text { font-size: 15px; font-weight: 800; color: #64748b; }
 
         .btn-refresh {
@@ -316,7 +185,7 @@
         .unit-now .clock-face { border-color: var(--color-now); }
         .unit-goal .clock-face { border-color: var(--color-goal); }
 
-        /* アニメーション: 常に translateX(-50%) を維持 */
+        /* アニメーション */
         @keyframes pulse {
             0% { transform: translateX(-50%) scale(1); }
             50% { transform: translateX(-50%) scale(1.08); }
@@ -357,7 +226,6 @@
             margin-bottom: 12px;
         }
 
-        /* ドラッグ対応カード */
         .task-item {
             display: flex;
             align-items: center;
@@ -439,7 +307,7 @@
                     </div>
                     <div class="info-group">
                         <span class="label-text">いま</span>
-                        <span id="nowDigital" class="digital-time">00:00</span>
+                        <span id="nowDigital" class="digital-time">12:00</span>
                         <button class="btn-refresh" onclick="resetNow()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
                         </button>
@@ -455,7 +323,7 @@
                     </div>
                     <div class="info-group">
                         <span class="label-text">もくひょう</span>
-                        <span id="goalDigital" class="digital-time">00:00</span>
+                        <span id="goalDigital" class="digital-time">12:00</span>
                         <button class="btn-refresh" onclick="resetGoal()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
                         </button>
@@ -467,7 +335,7 @@
                     <div id="progressFill" class="progress-fill"></div>
                 </div>
 
-                <!-- おわる (中央固定) -->
+                <!-- おわる -->
                 <div id="predictionClock" class="clock-unit unit-pred">
                     <div class="clock-face" id="predictionFace">
                         <div class="clock-center"></div>
@@ -476,7 +344,7 @@
                     </div>
                     <div class="info-group">
                         <span class="label-text">おわる</span>
-                        <span id="predDigital" class="digital-time">00:00</span>
+                        <span id="predDigital" class="digital-time">12:00</span>
                     </div>
                 </div>
             </div>
@@ -518,6 +386,8 @@
     </div>
 
     <script>
+        const STORAGE_KEY = 'kids_clock_v12_stable';
+
         let state = {
             now: { h: 0, m: 0 },
             goal: { h: 0, m: 0 },
@@ -546,20 +416,45 @@
 
         window.onload = () => {
             setupClockNumbers();
-            loadFromStorage();
-            if (state.tasks.length === 0) {
-                state.tasks = [{ id: Date.now(), name: 'しゅくだい', duration: 30, enabled: true }];
-            }
-            if (state.now.h === 0 && state.now.m === 0) resetNow();
-            if (state.goal.h === 0 && state.goal.m === 0) resetGoal();
             
+            // 1. まず読み込む
+            const hasSavedData = loadFromStorage();
+            
+            // 2. データがない場合のみデフォルト値をセット
+            if (!hasSavedData) {
+                const d = new Date();
+                state.now = { h: d.getHours(), m: d.getMinutes() };
+                const gd = new Date();
+                gd.setHours(d.getHours() + 1);
+                state.goal = { h: gd.getHours(), m: gd.getMinutes() };
+                // state.tasks = [{ id: Date.now(), name: 'しゅくだい', duration: 30, enabled: true }];
+            }
+
             initDragAndDrop();
-            updateUI();
+            updateUI(); // ここで描画と保存が行われる
             setInterval(updateUI, 60000);
         };
 
-        function saveToStorage() { localStorage.setItem('kids_clock_v11', JSON.stringify(state)); }
-        function loadFromStorage() { const saved = localStorage.getItem('kids_clock_v11'); if (saved) state = JSON.parse(saved); }
+        function saveToStorage() { 
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(state)); 
+        }
+
+        function loadFromStorage() { 
+            const saved = localStorage.getItem(STORAGE_KEY); 
+            if (saved) {
+                try {
+                    const parsed = JSON.parse(saved);
+                    // 必要なプロパティが揃っているか最低限チェック
+                    if (parsed && parsed.tasks) {
+                        state = parsed;
+                        return true;
+                    }
+                } catch(e) {
+                    console.error("Storage load error", e);
+                }
+            }
+            return false;
+        }
 
         function resetNow() {
             const d = new Date();
@@ -575,24 +470,31 @@
         }
 
         function addTask() {
-            const name = document.getElementById('taskInput').value.trim();
-            const durationInput = document.getElementById('durationInput');
-            const duration = parseInt(durationInput.value);
+            const nameEl = document.getElementById('taskInput');
+            const durEl = document.getElementById('durationInput');
+            const name = nameEl.value.trim();
+            const duration = parseInt(durEl.value);
             if (name && duration > 0) {
                 state.tasks.push({ id: Date.now(), name, duration, enabled: true });
-                document.getElementById('taskInput').value = '';
-                durationInput.value = '';
+                nameEl.value = '';
+                durEl.value = '';
+                // 即座に描画をリフレッシュ（タスク一覧を再構成させる）
+                renderTasks();
                 updateUI();
             }
         }
 
         function toggleTask(id) {
             const task = state.tasks.find(t => t.id === id);
-            if (task) { task.enabled = !task.enabled; updateUI(); }
+            if (task) { 
+                task.enabled = !task.enabled; 
+                updateUI(); 
+            }
         }
 
         function deleteTask(id) {
             state.tasks = state.tasks.filter(t => t.id !== id);
+            renderTasks();
             updateUI();
         }
 
@@ -615,10 +517,6 @@
             }
         }
 
-        function toMinutes(time) { return time.h * 60 + time.m; }
-        function fromMinutes(mins) { return { h: Math.floor(mins / 60) % 24, m: Math.floor(mins % 60) }; }
-
-        // ドラッグ＆ドロップの初期化
         function initDragAndDrop() {
             const list = document.getElementById('taskList');
             
@@ -632,32 +530,29 @@
             list.addEventListener('dragend', (e) => {
                 if (e.target.classList.contains('task-item')) {
                     e.target.classList.remove('dragging');
+                    // 並び順確定後に保存
+                    const newTasks = [];
+                    const items = list.querySelectorAll('.task-item');
+                    items.forEach(item => {
+                        const id = parseInt(item.dataset.id);
+                        const task = state.tasks.find(t => t.id === id);
+                        if (task) newTasks.push(task);
+                    });
+                    state.tasks = newTasks;
+                    updateUI();
                 }
             });
 
             list.addEventListener('dragover', (e) => {
                 e.preventDefault();
-                const afterElement = getDragAfterElement(list, e.clientY);
                 const dragging = document.querySelector('.dragging');
+                if (!dragging) return;
+                const afterElement = getDragAfterElement(list, e.clientY);
                 if (afterElement == null) {
                     list.appendChild(dragging);
                 } else {
                     list.insertBefore(dragging, afterElement);
                 }
-            });
-
-            list.addEventListener('drop', (e) => {
-                e.preventDefault();
-                // DOMの並び順をstateに反映
-                const newTasks = [];
-                const items = list.querySelectorAll('.task-item');
-                items.forEach(item => {
-                    const id = parseInt(item.dataset.id);
-                    const task = state.tasks.find(t => t.id === id);
-                    if (task) newTasks.push(task);
-                });
-                state.tasks = newTasks;
-                updateUI();
             });
         }
 
@@ -674,28 +569,33 @@
             }, { offset: Number.NEGATIVE_INFINITY }).element;
         }
 
-        function updateUI() {
-            saveToStorage();
+        function toMinutes(time) { return time.h * 60 + time.m; }
+        function fromMinutes(mins) { return { h: (Math.floor(mins / 60) + 24) % 24, m: Math.floor(mins % 60) }; }
+
+        function renderTasks() {
             const taskList = document.getElementById('taskList');
-            // ドラッグ中なら中身を全消しして再描画するとドラッグが切れるため、
-            // ドラッグ中でないときだけ中身をリフレッシュする（簡易的な実装）
+            taskList.innerHTML = '';
+            state.tasks.forEach(task => {
+                const item = document.createElement('div');
+                item.className = `task-item ${task.enabled ? '' : 'disabled'}`;
+                item.draggable = true;
+                item.dataset.id = task.id;
+                item.innerHTML = `
+                    <input type="checkbox" ${task.enabled ? 'checked' : ''} onchange="toggleTask(${task.id})">
+                    <div class="task-info">
+                        <span class="task-name">${task.name}</span>
+                        <span class="task-duration">${task.duration}分</span>
+                    </div>
+                    <button class="btn-delete" onclick="deleteTask(${task.id})">×</button>
+                `;
+                taskList.appendChild(item);
+            });
+        }
+
+        function updateUI() {
+            // ドラッグ中でないときだけリストを再描画（不整合防止）
             if (!document.querySelector('.dragging')) {
-                taskList.innerHTML = '';
-                state.tasks.forEach(task => {
-                    const item = document.createElement('div');
-                    item.className = `task-item ${task.enabled ? '' : 'disabled'}`;
-                    item.draggable = true;
-                    item.dataset.id = task.id;
-                    item.innerHTML = `
-                        <input type="checkbox" ${task.enabled ? 'checked' : ''} onchange="toggleTask(${task.id})">
-                        <div class="task-info">
-                            <span class="task-name">${task.name}</span>
-                            <span class="task-duration">${task.duration}分</span>
-                        </div>
-                        <button class="btn-delete" onclick="deleteTask(${task.id})">×</button>
-                    `;
-                    taskList.appendChild(item);
-                });
+                renderTasks();
             }
 
             let activeTotalMins = state.tasks.reduce((sum, t) => t.enabled ? sum + t.duration : sum, 0);
@@ -717,11 +617,12 @@
             
             const percentage = Math.max(ratio * 100, 0);
             const fill = document.getElementById('progressFill');
-            fill.style.width = `${percentage}%`;
+            fill.style.width = `${Math.min(percentage, 100)}%`;
             
             let color = ratio <= 0.5 ? "var(--color-now)" : (ratio < 1.0 ? "var(--color-mid)" : "var(--color-goal)");
             if (ratio > 1.0) {
                 fill.style.background = "var(--color-goal)";
+                fill.style.width = "100%";
             } else {
                 fill.style.background = `linear-gradient(90deg, var(--color-now) 0%, ${color} 100%)`;
             }
@@ -746,12 +647,14 @@
             } else {
                 predFace.style.borderColor = "#334155";
             }
+
+            // 最後に状態を保存
+            saveToStorage();
         }
 
-        // デジタル時計を12H表示に変更
-        function format12h(h, m) {
-            const period = h < 12 ? '午前' : '午後';
-            const displayH = h % 12 === 0 ? 12 : h % 12;
+        function format12hPure(h, m) {
+            let displayH = h % 12;
+            if (displayH === 0) displayH = 12;
             return `${displayH}:${String(m).padStart(2, '0')}`;
         }
 
@@ -761,7 +664,7 @@
             document.getElementById(prefix + 'Hour').style.transform = `translateX(-50%) rotate(${hDeg}deg)`;
             document.getElementById(prefix + 'Min').style.transform = `translateX(-50%) rotate(${mDeg}deg)`;
             const digi = document.getElementById(prefix + 'Digital');
-            if (digi) digi.innerText = format12h(time.h, time.m);
+            if (digi) digi.innerText = format12hPure(time.h, time.m);
         }
 
         window.onresize = updateUI;
