@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    
+     
     <link rel="manifest" href="manifest.json">
     <meta name="theme-color" content="#000000">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
@@ -11,7 +11,7 @@
     <meta property="og:title" content="先読みタイマー">
     <meta property="og:description" content="やることを登録することで終了見込みの先読みをサポートします。">
     <meta property="og:type" content="website">
-
+    
     <title>先読みタイマー</title>
     <link href="https://fonts.googleapis.com/css2?family=Zen+Maru+Gothic:wght@400;700&display=swap" rel="stylesheet">
     <style>
@@ -185,7 +185,6 @@
         .unit-now .clock-face { border-color: var(--color-now); }
         .unit-goal .clock-face { border-color: var(--color-goal); }
 
-        /* アニメーション */
         @keyframes pulse {
             0% { transform: translateX(-50%) scale(1); }
             50% { transform: translateX(-50%) scale(1.08); }
@@ -298,7 +297,6 @@
             <div id="alertBanner" class="alert-banner">じかんを すぎてるよ！</div>
 
             <div class="progress-section">
-                <!-- いま -->
                 <div class="clock-unit unit-now">
                     <div class="clock-face" id="face-now" onclick="openTimeModal('now')">
                         <div class="clock-center"></div>
@@ -307,14 +305,13 @@
                     </div>
                     <div class="info-group">
                         <span class="label-text">いま</span>
-                        <span id="nowDigital" class="digital-time">12:00</span>
+                        <span id="nowDigital" class="digital-time">--:--</span>
                         <button class="btn-refresh" onclick="resetNow()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
                         </button>
                     </div>
                 </div>
 
-                <!-- もくひょう -->
                 <div class="clock-unit unit-goal">
                     <div class="clock-face" id="face-goal" onclick="openTimeModal('goal')">
                         <div class="clock-center"></div>
@@ -323,19 +320,17 @@
                     </div>
                     <div class="info-group">
                         <span class="label-text">もくひょう</span>
-                        <span id="goalDigital" class="digital-time">12:00</span>
+                        <span id="goalDigital" class="digital-time">--:--</span>
                         <button class="btn-refresh" onclick="resetGoal()">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"></path><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
                         </button>
                     </div>
                 </div>
 
-                <!-- プログレスバー -->
                 <div class="progress-track">
                     <div id="progressFill" class="progress-fill"></div>
                 </div>
 
-                <!-- おわる -->
                 <div id="predictionClock" class="clock-unit unit-pred">
                     <div class="clock-face" id="predictionFace">
                         <div class="clock-center"></div>
@@ -344,13 +339,12 @@
                     </div>
                     <div class="info-group">
                         <span class="label-text">おわる</span>
-                        <span id="predDigital" class="digital-time">12:00</span>
+                        <span id="predDigital" class="digital-time">--:--</span>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- 管理エリア -->
         <div class="management-area">
             <div class="area-header">
                 <div class="area-title">
@@ -369,7 +363,6 @@
         </div>
     </div>
 
-    <!-- 時刻設定モーダル -->
     <div id="timeModal" class="modal">
         <div class="modal-content">
             <h3 id="modalTitle" style="font-weight: 800; margin-bottom: 15px;">じかんをかえる</h3>
@@ -386,7 +379,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'kids_clock_v12_stable';
+        const STORAGE_KEY = 'kids_clock_v13_stable';
 
         let state = {
             now: { h: 0, m: 0 },
@@ -417,22 +410,23 @@
         window.onload = () => {
             setupClockNumbers();
             
-            // 1. まず読み込む
+            // 1. ストレージからデータを読み込む
             const hasSavedData = loadFromStorage();
             
-            // 2. データがない場合のみデフォルト値をセット
+            // 2. データがなかった場合のみ初期値を設定
             if (!hasSavedData) {
                 const d = new Date();
                 state.now = { h: d.getHours(), m: d.getMinutes() };
                 const gd = new Date();
                 gd.setHours(d.getHours() + 1);
                 state.goal = { h: gd.getHours(), m: gd.getMinutes() };
-                // state.tasks = [{ id: Date.now(), name: 'しゅくだい', duration: 30, enabled: true }];
+                state.tasks = [{ id: Date.now(), name: 'しゅくだい', duration: 30, enabled: true }];
             }
 
             initDragAndDrop();
-            updateUI(); // ここで描画と保存が行われる
-            setInterval(updateUI, 60000);
+            // 初回のUI描画（ここでは自動保存を呼ばない）
+            updateUI(false); 
+            setInterval(() => updateUI(false), 60000);
         };
 
         function saveToStorage() { 
@@ -444,8 +438,7 @@
             if (saved) {
                 try {
                     const parsed = JSON.parse(saved);
-                    // 必要なプロパティが揃っているか最低限チェック
-                    if (parsed && parsed.tasks) {
+                    if (parsed && parsed.tasks && parsed.now && parsed.goal) {
                         state = parsed;
                         return true;
                     }
@@ -459,14 +452,14 @@
         function resetNow() {
             const d = new Date();
             state.now = { h: d.getHours(), m: d.getMinutes() };
-            updateUI();
+            updateUI(true);
         }
 
         function resetGoal() {
             const d = new Date();
             d.setHours(d.getHours() + 1);
             state.goal = { h: d.getHours(), m: d.getMinutes() };
-            updateUI();
+            updateUI(true);
         }
 
         function addTask() {
@@ -478,9 +471,7 @@
                 state.tasks.push({ id: Date.now(), name, duration, enabled: true });
                 nameEl.value = '';
                 durEl.value = '';
-                // 即座に描画をリフレッシュ（タスク一覧を再構成させる）
-                renderTasks();
-                updateUI();
+                updateUI(true);
             }
         }
 
@@ -488,14 +479,13 @@
             const task = state.tasks.find(t => t.id === id);
             if (task) { 
                 task.enabled = !task.enabled; 
-                updateUI(); 
+                updateUI(true); 
             }
         }
 
         function deleteTask(id) {
             state.tasks = state.tasks.filter(t => t.id !== id);
-            renderTasks();
-            updateUI();
+            updateUI(true);
         }
 
         function openTimeModal(type) {
@@ -513,7 +503,7 @@
             if (!isNaN(h) && h >= 0 && h < 24 && !isNaN(m) && m >= 0 && m < 60) {
                 state[state.editingType] = { h, m };
                 closeModal();
-                updateUI();
+                updateUI(true);
             }
         }
 
@@ -530,7 +520,6 @@
             list.addEventListener('dragend', (e) => {
                 if (e.target.classList.contains('task-item')) {
                     e.target.classList.remove('dragging');
-                    // 並び順確定後に保存
                     const newTasks = [];
                     const items = list.querySelectorAll('.task-item');
                     items.forEach(item => {
@@ -539,7 +528,7 @@
                         if (task) newTasks.push(task);
                     });
                     state.tasks = newTasks;
-                    updateUI();
+                    updateUI(true);
                 }
             });
 
@@ -592,8 +581,7 @@
             });
         }
 
-        function updateUI() {
-            // ドラッグ中でないときだけリストを再描画（不整合防止）
+        function updateUI(shouldSave = false) {
             if (!document.querySelector('.dragging')) {
                 renderTasks();
             }
@@ -648,8 +636,9 @@
                 predFace.style.borderColor = "#334155";
             }
 
-            // 最後に状態を保存
-            saveToStorage();
+            if (shouldSave) {
+                saveToStorage();
+            }
         }
 
         function format12hPure(h, m) {
@@ -667,7 +656,7 @@
             if (digi) digi.innerText = format12hPure(time.h, time.m);
         }
 
-        window.onresize = updateUI;
+        window.onresize = () => updateUI(false);
         
         if ("serviceWorker" in navigator) {
         navigator.serviceWorker.register("sw.js")
