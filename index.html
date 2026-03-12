@@ -654,9 +654,10 @@
         }
 
         function format12hPure(h, m) {
+            const period = h < 12 ? 'ごぜん' : 'ごご';
             let displayH = h % 12;
             if (displayH === 0) displayH = 12;
-            return `${displayH}:${String(m).padStart(2, '0')}`;
+            return `${period}${displayH}:${String(m).padStart(2, '0')}`;
         }
 
         function updateClock(prefix, time) {
@@ -677,4 +678,5 @@
     </script>
 </body>
 </html>
+
 
