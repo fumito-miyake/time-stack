@@ -348,8 +348,8 @@
         <div class="management-area">
             <div class="area-header">
                 <div class="area-title">
-                    やるリスト
-                    <span id="totalTaskTime" style="font-size: 14px; color: #475569; background: #f1f5f9; padding: 2px 8px; border-radius: 8px;">0分</span>
+                    やることリスト
+                    <span id="totalTaskTime" style="font-size: 14px; color: #475569; background: #f1f5f9; padding: 2px 8px; border-radius: 8px;">0ふん</span>
                 </div>
             </div>
             <div class="task-list-container" id="taskListContainer">
@@ -357,7 +357,7 @@
             </div>
             <div class="add-task-form">
                 <input type="text" id="taskInput" placeholder="なにする？">
-                <input type="number" id="durationInput" placeholder="分">
+                <input type="number" id="durationInput" placeholder="ふん">
                 <button onclick="addTask()" class="btn-primary">＋</button>
             </div>
         </div>
@@ -379,7 +379,7 @@
     </div>
 
     <script>
-        const STORAGE_KEY = 'kids_clock_v13_stable';
+        const STORAGE_KEY = 'time_stack_v13_stable';
 
         let state = {
             now: { h: 0, m: 0 },
@@ -569,25 +569,37 @@
                 item.className = `task-item ${task.enabled ? '' : 'disabled'}`;
                 item.draggable = true;
                 item.dataset.id = task.id;
+                const unit = getMinuteSuffix(task.duration);
+                
                 item.innerHTML = `
                     <input type="checkbox" ${task.enabled ? 'checked' : ''} onchange="toggleTask(${task.id})">
                     <div class="task-info">
                         <span class="task-name">${task.name}</span>
-                        <span class="task-duration">${task.duration}分</span>
+                        <span class="task-duration">${task.duration}${unit}</span>
                     </div>
                     <button class="btn-delete" onclick="deleteTask(${task.id})">×</button>
                 `;
                 taskList.appendChild(item);
             });
         }
-
+    
+        function getMinuteSuffix(min) {
+            const lastDigit = min % 10;
+            if ([1,3,4,6,8].includes(lastDigit) || min % 10 === 0) {
+                return "ぷん";
+            }
+            return "ふん";
+        }
+        
         function updateUI(shouldSave = false) {
             if (!document.querySelector('.dragging')) {
                 renderTasks();
             }
 
             let activeTotalMins = state.tasks.reduce((sum, t) => t.enabled ? sum + t.duration : sum, 0);
-            document.getElementById('totalTaskTime').innerText = `${activeTotalMins}分`;
+            const unit = getMinuteSuffix(activeTotalMins);
+            
+            document.getElementById('totalTaskTime').innerText = `${activeTotalMins}${unit}`;
 
             updateClock('now', state.now);
             updateClock('goal', state.goal);
@@ -665,3 +677,4 @@
     </script>
 </body>
 </html>
+
